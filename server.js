@@ -13,7 +13,7 @@ app.use(express.static(path.join(__dirname, "public")))
 
 //run when client connects
 io.on("connection",(socket)=>{
-    //send to front
+    //send to front (a msg)
     socket.emit("message", "welcome to chat app")
 
     //broadcast when user connects
@@ -21,7 +21,7 @@ io.on("connection",(socket)=>{
     socket.broadcast.emit("message", "user has joined the chat")
 
     //bradcast everybody
-    io.emit("all clients")
+    io.emit("message","all clients")
 
     //runs when client disconnects
     socket.on("disconnect",()=>{
@@ -30,7 +30,7 @@ io.on("connection",(socket)=>{
 
     // listen for chat message
     socket.on("chatMessage", (msg)=>{
-        console.log(msg)
+        io.emit("message" ,msg)
     })
 })
 
