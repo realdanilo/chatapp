@@ -1,3 +1,7 @@
+//get username and room URL from query
+const {username, room} = Qs.parse(location.search,{ignoreQueryPrefix:true})
+// console.log(username, room)
+
 //output msg to dom
 function outputMessage(msg){
     let div = document.createElement("div")
@@ -13,6 +17,10 @@ function outputMessage(msg){
 const chatForm = document.getElementById("chat-form")
 const chatMessages = document.querySelector(".chat-messages")
 const socket = io()
+
+//join chatroom
+socket.emit("joinRoom", {username, room})
+
 //Getting a message
 socket.on("message",(message)=>{
     // console.log(message)

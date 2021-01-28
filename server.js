@@ -14,25 +14,35 @@ app.use(express.static(path.join(__dirname, "public")))
 
 //run when client connects
 io.on("connection",(socket)=>{
-    //send to front (a msg)
-    socket.emit("message", formatMessage("Chat Bot", "Welcome to chat"))
+    socket.on("joinRoom",({username, room})=>{
+        //create user
+        
 
-    //broadcast when user connects
-    //broadcast >> emit everybody except the new user
-    socket.broadcast.emit("message", formatMessage("Chat Bot","user has joined the chat"))
+        //send to front (a msg)
+        socket.emit("message", formatMessage("Chat Bot", "Welcome to chat"))
 
-    //bradcast everybody
-    io.emit("message","all clients")
+        //broadcast when user connects
+        //broadcast >> emit everybody except the new user
+        socket.broadcast.emit("message", formatMessage("Chat Bot","user has joined the chat"))
+
+        //bradcast everybody
+        io.emit("message","all clients")
+
+
+    })
+
+
+   
+    // listen for chat message
+    socket.on("chatMessage", (msg)=>{
+        io.emit("message" , formatMessage("USER",msg))
+    })
 
     //runs when client disconnects
     socket.on("disconnect",()=>{
         io.emit("message", formatMessage("Chat Bot", "user has left the chat"))
     })
 
-    // listen for chat message
-    socket.on("chatMessage", (msg)=>{
-        io.emit("message" , formatMessage("USER",msg))
-    })
 })
 
 
