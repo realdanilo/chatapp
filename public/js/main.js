@@ -3,8 +3,8 @@ function outputMessage(msg){
     let div = document.createElement("div")
     div.classList.add("message")
     div.innerHTML = `
-    <p class="meta">Test <span>9:12pm</span></p>
-	<p class="text"> ${msg}</p>
+    <p class="meta">${msg.username} <span>${msg.time}</span></p>
+	<p class="text"> ${msg.text}</p>
     `
 
   document.querySelector(".chat-messages").append(div)
@@ -29,5 +29,6 @@ chatForm.addEventListener("submit",(e)=>{
     //emit message to server
     socket.emit("chatMessage",msg.value)
     msg.value = ""
+    msg.focus();
    
 })
