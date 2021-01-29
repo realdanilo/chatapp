@@ -1,6 +1,22 @@
 //get username and room URL from query
 const {username, room} = Qs.parse(location.search,{ignoreQueryPrefix:true})
 // console.log(username, room)
+let roomNameDom = document.getElementById("room-name")
+let usersNameDom = document.getElementById("users")
+
+//output room name to dom
+function outputRoomName(name){
+    roomNameDom.textContent = name
+}
+
+function outputUsers(users){
+    usersNameDom.innerHTML = `
+        ${users.map(u => {
+           return  `<li>${u.username}</li>`
+        }).join("")}
+    `
+    //join array, turn it into a string with quotes
+}
 
 //output msg to dom
 function outputMessage(msg){
@@ -20,6 +36,12 @@ const socket = io()
 
 //join chatroom
 socket.emit("joinRoom", {username, room})
+
+//get room and users
+socket.on("roomUsers",({room, users})=>{
+    outputRoomName(room)
+    outputUsers(users)
+})
 
 //Getting a message
 socket.on("message",(message)=>{

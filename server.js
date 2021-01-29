@@ -31,6 +31,8 @@ io.on("connection",(socket)=>{
         //bradcast everybody
         //io.emit("message","all clients")
 
+        //users and room info
+        io.to(user.room).emit("roomUsers",{room:user.room, users:getRoomUsers(user.room)})
 
     })
 
@@ -49,6 +51,9 @@ io.on("connection",(socket)=>{
         const user = userLeave(socket.id)
         // console.log(user)
         io.to(user.room).emit("message", formatMessage(user.username, `${user.username} has left the chat`))
+        //users and room info when disconnect update
+        io.to(user.room).emit("roomUsers",{room:user.room, users:getRoomUsers(user.room)})
+
     })
 
 })
